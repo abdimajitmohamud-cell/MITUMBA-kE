@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITUMBA kE - Sales Product Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --bg-blue: #0052cc;
+            --sidebar-gradient-start: #0033aa;
+            --sidebar-gradient-end: #0a66ff;
+            --text-active-pink: #d946ef;
+            --pill-pink: #d946ef;
+            --card-bg: #ffffff;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-blue);
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Sidebar Layout --- */
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, var(--sidebar-gradient-start), var(--sidebar-gradient-end));
+            padding: 30px 0 30px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffffff;
+        }
+
+        .user-info .name {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .user-info .handle {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            opacity: 0.85;
+            cursor: pointer;
+            border-radius: 12px 0 0 12px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Active Navigation Item (Sales Product White Capsule Layout) */
+        .nav-item.active {
+            background-color: #ffffff;
+            color: var(--text-active-pink);
+            opacity: 1;
+            font-weight: 600;
+            position: relative;
+            box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 25%;
+            height: 50%;
+            width: 4px;
+            background-color: #ffffff;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-right: 24px;
+        }
+
+        .brand-logo-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .handshake-icon {
+            font-size: 2.2rem;
+            transform: rotate(-15deg);
+            display: inline-block;
+        }
+
+        /* --- Main Content Panel Layout --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Top Header Search Section */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-area h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .title-area span {
+            color: var(--text-active-pink);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .search-bar-container {
+            position: relative;
+            width: 420px;
+        }
+
+        .search-bar-container input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            color: #333333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .search-bar-container::before {
+            content: '🔍';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* Filter Tab Bar Pills */
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .pill {
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+        }
+
+        .pill.active {
+            background-color: var(--pill-pink);
+            border-color: var(--pill-pink);
+            font-weight: 600;
+        }
+
+        /* Analytics Board Split Grid Row */
+        .analytics-board {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            color: #333333;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 240px;
+            width: 100%;
+        }
+
+        /* Collection Sidebar Stack */
+        .collections-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .collection-row {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 16px;
+            gap: 15px;
+            transition: all 0.2s ease;
+        }
+
+        /* Floating pop-out effect for Trending Now item */
+        .collection-row.featured {
+            background-color: var(--pill-pink);
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(217, 70, 239, 0.4);
+            z-index: 5;
+        }
+
+        .avatar-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .collection-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .collection-info h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .collection-info p {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* --- Date Picker & Pagination Controls Bar --- */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .date-picker-mock {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 10px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .pagination-mock {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            align-items: center;
+        }
+
+        .pagination-mock span {
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        .pagination-mock span.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+
+        /* --- Product Catalog Grid --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 12px;
+            color: #333333;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .image-frame {
+            width: 100%;
+            height: 180px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 4px;
+        }
+
+        .price {
+            color: var(--text-active-pink);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .price small {
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555555;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div>
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Juliana Silva" class="avatar">
+                <div class="user-info">
+                    <div class="name">Juliana Silva</div>
+                    <div class="handle">@reallygreatsite</div>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a class="nav-item">🏠 &nbsp;&nbsp; Home</a>
+                <a class="nav-item">📊 &nbsp;&nbsp; Top-Selling Items</a>
+                <a class="nav-item active">🛒 &nbsp;&nbsp; Sales Product</a>
+                <a class="nav-item">📈 &nbsp;&nbsp; Statistic</a>
+                <a class="nav-item">🔥 &nbsp;&nbsp; Trending Products</a>
+                <a class="nav-item">🏷️ &nbsp;&nbsp; Promo</a>
+                <a class="nav-item">👤 &nbsp;&nbsp; User</a>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="brand-logo-text">MITUMBA kE</div>
+            <div class="handshake-icon">🤝</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="top-header">
+            <div class="title-area">
+                <h1>Sales Product</h1>
+                <span>3 Sales Found</span>
+            </div>
+            <div class="search-bar-container">
+                <input type="text" placeholder="Search product...">
+            </div>
+        </header>
+
+        <section class="filter-row">
+            <span class="pill active">All Sales</span>
+            <span class="pill">Pending</span>
+            <span class="pill">Completed</span>
+        </section>
+
+        <section class="analytics-board">
+            <div class="chart-container">
+                <canvas id="salesTrendsChart"></canvas>
+            </div>
+
+            <div class="collections-panel">
+                <div class="collection-row">
+                    <div class="avatar-group">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=80&q=80">
+                    </div>
+                    <div class="collection-info">
+                        <h4>Top-Selling Collections</h4>
+                        <p>Highlight of our most popular premium pieces.</p>
+                    </div>
+                </div>
+
+                <div class="collection-row featured">
+                    <div class="avatar-group">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80">
+                    </div>
+                    <div class="collection-info">
+                        <h4>Trending Now</h4>
+                        <p>Styles currently driving high engagement and sales.</p>
+                    </div>
+                </div>
+
+                <div class="collection-row">
+                    <div class="avatar-group">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=80&q=80">
+                        <img class="collection-avatar" src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=80&q=80">
+                    </div>
+                    <div class="collection-info">
+                        <h4>Best Performers</h4>
+                        <p>Clothing items that consistently lead our sales charts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="controls-bar">
+            <div class="date-picker-mock">
+                <span>📅 &nbsp;25 July 2030</span>
+                <span style="color:#aaa; font-weight:normal;">To</span>
+                <span>📅 &nbsp;29 July 2030</span>
+                <span style="font-size:0.6rem; margin-left:4px;">▼</span>
+            </div>
+            <div class="pagination-mock">
+                <span>&lt;</span>
+                <span>1</span>
+                <span class="active" style="color: var(--text-active-pink);">2</span>
+                <span>3</span>
+                <span>&gt;</span>
+            </div>
+        </section>
+
+        <section class="product-grid">
+            <div class="product-card">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=300&q=80" alt="Oversized T-shirt">
+                </div>
+                <div class="product-details">
+                    <div class="price">$389<small>.99</small></div>
+                    <div class="product-name">Oversized T-shirt</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=300&q=80" alt="Jeans">
+                </div>
+                <div class="product-details">
+                    <div class="price">$220<small>.99</small></div>
+                    <div class="product-name">Jeans</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=300&q=80" alt="Hoodie">
+                </div>
+                <div class="product-details">
+                    <div class="price">$431<small>.99</small></div>
+                    <div class="product-name">Hoodie</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=300&q=80" alt="Formal Blazer">
+                </div>
+                <div class="product-details">
+                    <div class="price">$450<small>.99</small></div>
+                    <div class="product-name">Formal Blazer</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const ctx = document.getElementById('salesTrendsChart').getContext('2d');
+        
+        // Exact trend alignment configuration configuration parameters mimicking the multi-series line chart mockup
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'],
+                datasets: [
+                    {
+                        label: 'Series 1',
+                        data: [4, 10, 39, 31, 33],
+                        borderColor: '#a3a3a3',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Series 2',
+                        data: [2, 19, 13, 24, 42],
+                        borderColor: '#e5e5e5',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0,
+                    },
+                    {
+                        label: 'Series 3',
+                        data: [23, 34, 30, 42, 44],
+                        borderColor: '#d946ef',
+                        backgroundColor: 'transparent',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#d946ef',
+                        tension: 0,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 8,
+                            usePointStyle: true,
+                            font: { size: 11, weight: 'bold' },
+                            color: '#333333'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#333333', font: { size: 10 } }
+                    },
+                    y: {
+                        min: 0,
+                        max: 50,
+                        ticks: { stepSize: 10, color: '#333333', font: { size: 10 } },
+                        grid: { color: '#f0f0f0' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
