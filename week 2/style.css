@@ -1,0 +1,800 @@
+/* --- CSS Global Variables & Style Reset --- */
+:root {
+    --primary-purple: #6211ff;
+    --button-purple: #b983ff;
+    --text-gray: #888888;
+    --input-border: #cccccc;
+    --bg-light: #ffffff;
+    --font-mono: 'Courier New', Courier, monospace;
+    --font-sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --store-blue: #0d52bd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-light);
+    overflow-x: hidden;
+}
+
+/* --- Page State Management Class --- */
+.page-view {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+.page-view.active-page {
+    display: flex;
+}
+#store-wrapper-page.active-page {
+    display: block;
+}
+
+/* ==========================================================================
+   STYLE SECTION 1: AUTHENTICATION MODULE
+   ========================================================================== */
+.auth-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family: var(--font-mono);
+}
+
+.brand-panel {
+    width: 50%;
+    background-color: var(--primary-purple);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    position: relative;
+    padding: 20px;
+}
+
+.brand-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.brand-subtitle {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.form-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-light);
+}
+
+.auth-view {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+.auth-view.active-view {
+    display: flex;
+}
+
+.form-header {
+    height: 22%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #333333;
+    padding-top: 20px;
+}
+
+.form-header h2 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    color: #000000;
+}
+
+.forgot-header h2 {
+    color: var(--button-purple);
+}
+
+.switch-link {
+    color: var(--button-purple);
+    text-decoration: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.switch-link-dark {
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.form-body {
+    padding: 60px 10% 20px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex-grow: 1;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group label {
+    color: var(--text-gray);
+    font-size: 1rem;
+}
+
+.input-group input {
+    width: 100%;
+    max-width: 520px;
+    padding: 18px;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    font-size: 1.1rem;
+    color: #333333;
+    outline: none;
+}
+
+.submit-btn {
+    width: 100%;
+    max-width: 380px;
+    background-color: var(--button-purple);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: flex-start;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: opacity 0.2s ease;
+    text-align: center;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+/* --- Retro Windows UI Graphics Popup --- */
+.retro-graphics {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    pointer-events: none;
+}
+.active-graphics {
+    display: block;
+}
+
+.gradient-box {
+    position: absolute;
+    top: 44%;
+    left: 13%;
+    width: 340px;
+    height: 230px;
+    background: linear-gradient(135deg, #b983ff, #ff8da1);
+    border: 2px dashed #333333;
+}
+
+.paint-bucket {
+    position: absolute;
+    top: 45%;
+    left: 15%;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 0px black;
+}
+
+.progress-window {
+    position: absolute;
+    top: 29%;
+    left: 36%;
+    width: 420px;
+    background: linear-gradient(to bottom, #ff9ebb, #ff8da1);
+    border: 2px solid #333333;
+    box-shadow: 4px 4px 0px #000000;
+    pointer-events: auto;
+}
+
+.window-header {
+    background-color: #cbb4ff;
+    padding: 6px 10px;
+    border-bottom: 2px solid #333333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+.close-btn {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #333333;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.window-body {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.loading-text {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #000000;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 22px;
+    border: 2px solid #333333;
+    background-color: #cbb4ff;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 85%;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.stop-btn {
+    align-self: flex-end;
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
+    padding: 6px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #ffffff;
+}
+
+/* ==========================================================================
+   STYLE SECTION 2: STOREFRONT SUB-ROUTING MULTI-PAGES
+   ========================================================================== */
+.store-body {
+    background-color: var(--store-blue);
+    color: #ffffff;
+    padding: 40px;
+    font-family: var(--font-sans);
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    width: 32px;
+}
+
+.menu-icon span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 45px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.15rem;
+    opacity: 0.65;
+    transition: all 0.2s ease;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    opacity: 1;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 4px;
+}
+
+.brand-store {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.brand-store-text {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-align: right;
+    line-height: 1.15;
+    text-transform: uppercase;
+}
+
+.handshake-icon {
+    width: 75px;
+    height: 75px;
+    fill: #000000;
+}
+
+/* --- Dashboard Hero Banner Configurations --- */
+.dashboard-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px 40px;
+    border-radius: 24px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dashboard-greeting h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dashboard-greeting p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.dashboard-stats-strip {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-bubble {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px 25px;
+    border-radius: 16px;
+    text-align: center;
+    min-width: 150px;
+}
+
+.stat-num {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--button-purple);
+    white-space: nowrap;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+/* Multi-View Subpages Content Architecture Controllers */
+.store-view {
+    display: none;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.store-view.active-view {
+    display: block;
+}
+
+/* --- Page View Template Structure Cards --- */
+.view-panel-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 750px;
+    margin: 40px auto;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.panel-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    border-bottom: 2px dashed rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+
+.cart-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 60px;
+}
+
+.cart-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(255,255,255,0.2);
+    padding-bottom: 12px;
+}
+
+.cart-total-footer {
+    margin-top: 30px;
+    border-top: 2px solid white;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.action-panel-btn {
+    background-color: #4eb848; /* Accent green for M-Pesa hooks */
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 100%;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease;
+}
+
+.action-panel-btn:hover {
+    background-color: #3da338;
+}
+
+/* Tracking Card Logistics Sub-elements */
+.tracking-card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 5px solid #4eb848;
+}
+
+.tracking-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 6px;
+}
+
+.tracking-timeline {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-top: 15px;
+    padding-top: 10px;
+}
+
+.tracking-step {
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    flex: 1;
+}
+
+.tracking-step.done {
+    opacity: 1;
+    color: #4eb848;
+    font-weight: bold;
+}
+
+/* Profile details configurations */
+.profile-details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.15rem;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.profile-label {
+    opacity: 0.7;
+}
+
+/* 4-Column Display Grid Layout Matrix */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 35px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 24px;
+}
+
+/* Card Visual Matrix Shapes */
+.card-img-top, .card-img-bottom {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 16px; 
+}
+
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.price-pink {
+    color: #d946ef;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.product-name {
+    color: #ffffff;
+    text-align: right;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+.add-to-basket-btn {
+    background-color: #ffffff;
+    color: var(--store-blue);
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 14px;
+    text-align: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.add-to-basket-btn:hover {
+    transform: scale(1.03);
+    background-color: #f3e8ff;
+}
+
+/* ==========================================================================
+   POPUP MODAL COMPONENT OVERLAYS (MPESA & PRELOADER)
+   ========================================================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active-modal {
+    display: flex;
+}
+
+.mpesa-modal-card {
+    background: #ffffff;
+    color: #333333;
+    width: 90%;
+    max-width: 460px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.mpesa-header {
+    background: #eceff1;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.mpesa-logo-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #000000;
+}
+
+.modal-close-x {
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal-body-content {
+    padding: 25px;
+}
+
+.mpesa-amount-banner {
+    background: #f1f8e9;
+    border: 1px dashed #4eb848;
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+.mpesa-amount-banner strong {
+    color: #3da338;
+    font-size: 1.2rem;
+}
+
+.mpesa-footer {
+    padding: 15px 25px 25px 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.mpesa-cancel-btn {
+    background: #e0e0e0;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.mpesa-confirm-btn {
+    background: #4eb848;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- Preloader Graphic System --- */
+.preloader-card {
+    background: #111111;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spinner-ring {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(78, 184, 72, 0.1);
+    border-top: 4px solid #4eb848;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.preloader-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.preloader-card p {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.countdown-bar-wrapper {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.countdown-fill {
+    width: 100%;
+    height: 100%;
+    background: #4eb848;
+    transform: translateX(-100%);
+}
+
+/* Layout Responsiveness Ecosystem */
+@media (max-width: 786px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-hero { flex-direction: column; text-align: center; gap: 20px; }
+    .auth-container { flex-direction: column; }
+    .brand-panel, .form-panel { width: 100%; height: 50vh; }
+}
+@media (max-width: 1024px) {
+    header { flex-direction: column; gap: 25px; }
+    .products-grid { grid-template-columns: 1fr; }
+}
