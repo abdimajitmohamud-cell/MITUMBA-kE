@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITUMBA.ke - Vendor & Buyer Dashboard</title>
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==========================================================================
+       SECTION 1 VIEW: DYNAMIC AUTH INTERFACE (SIGNUP/LOGIN/RECOVERY)
+       ========================================================================== -->
+    <div id="auth-page" class="page-view active-page">
+        <div class="auth-container">
+            
+            <!-- Left Branding Column Layout -->
+            <div class="brand-panel">
+                <div class="brand-title">MITUMBA.ke</div>
+                <div id="brand-subtitle-text" class="brand-subtitle">Ng’ara in style</div>
+
+                <!-- Recovery Flow Visual Component Engine -->
+                <div id="retro-popups" class="retro-graphics">
+                    <div class="gradient-box"></div>
+                    <div class="paint-bucket">🪣</div>
+                    <div class="progress-window">
+                        <div class="window-header">
+                            <span>PROGRESS</span>
+                            <div class="close-btn" onclick="switchAuthView('login')">X</div>
+                        </div>
+                        <div class="window-body">
+                            <div class="loading-text">LOADING...</div>
+                            <div class="progress-bar-container">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <button class="stop-btn" onclick="switchAuthView('login')">STOP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Conditional Panel Interface Forms Wrapper -->
+            <div class="form-panel">
+
+                <!-- 1A: Sign-Up Interface Form Panel -->
+                <form id="signup-view" class="auth-view active-view" onsubmit="handleAuthSubmit(event)">
+                    <div class="form-header">
+                        <h2>SiGN UP</h2>
+                        <span class="switch-link" onclick="switchAuthView('login')">Already Registered? Login</span>
+                    </div>
+                    <div class="form-body">
+                        <div class="input-group">
+                            <label>Please enter your name</label>
+                            <input type="text" id="signup-name" value="Abdi Majit" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Please enter Email</label>
+                            <input type="email" id="signup-email" value="abdi@gmail.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Please enter password</label>
+                            <input type="password" id="signup-password" value="******" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Please enter date of birth</label>
+                            <input type="text" value="01/08/2000">
+                        </div>
+                        <button type="submit" class="submit-btn">SIGN UP</button>
+                    </div>
+                </form>
+
+                <!-- 1B: Login Interface Form Panel -->
+                <form id="login-view" class="auth-view" onsubmit="handleAuthSubmit(event)">
+                    <div class="form-header">
+                        <h2>LOGIN</h2>
+                        <span class="switch-link-dark" onclick="switchAuthView('signup')">Don’t have an account? Sign Up</span>
+                    </div>
+                    <div class="form-body">
+                        <div class="input-group">
+                            <label>Please enter Email</label>
+                            <input type="email" id="login-email" value="abdi@gmail.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Please enter password</label>
+                            <input type="password" id="login-password" value="******" required>
+                        </div>
+                        <span class="switch-link" style="margin-top:-10px; font-size: 0.95rem;" onclick="switchAuthView('forgot')">Forgot Password?</span>
+                        <button type="submit" class="submit-btn">LOGIN</button>
+                    </div>
+                </form>
+
+                <!-- 1C: Security Credentials Account Recovery Panel Form -->
+                <div id="forgot-view" class="auth-view">
+                    <div class="form-header forgot-header">
+                        <h2>Forgot Password</h2>
+                        <span class="switch-link" onclick="switchAuthView('login')">Back to Login</span>
+                    </div>
+                    <div class="form-body" style="padding-top: 80px;">
+                        <div class="input-group">
+                            <label>Please enter Email</label>
+                            <input type="email" value="abdi@gmail.com">
+                        </div>
+                        <button class="submit-btn" style="max-width: 380px;" onclick="triggerPasswordAlert()">SEND</button>
+                        <span class="switch-link" style="text-align: center; margin-top: 15px; max-width: 380px;" onclick="navigateToPage('products-page')">← Skip & Return to Shop</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       SECTION 2 VIEW: MAIN APP WRAPPER (STOREFRONT VIEWS SYSTEM)
+       ========================================================================== -->
+    <div id="store-wrapper-page" class="page-view store-body">
+        
+        <!-- Header Navigation Bar Component -->
+        <header>
+            <div class="nav-left">
+                <div class="menu-icon" onclick="toggleNavMenuAlert()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="nav-products" class="nav-item active" onclick="switchStoreView('products-page', 'nav-products')">Dashboard</a></li>
+                        <li><a href="#" id="nav-cart" class="nav-item" onclick="switchStoreView('cart-page', 'nav-cart')">My Basket (<span id="cart-counter">0</span>)</a></li>
+                        <li><a href="#" id="nav-track" class="nav-item" onclick="switchStoreView('track-page', 'nav-track')">Track Orders</a></li>
+                        <li><a href="#" id="nav-profile" class="nav-item" onclick="switchStoreView('profile-page', 'nav-profile')">Profile</a></li>
+                        <li><a href="#" onclick="handleLogout()">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="brand-store">
+                <div class="brand-store-text">MITUMBA<br>kE</div>
+                <svg class="handshake-icon" viewBox="0 0 24 24">
+                    <path d="M21.71 10.29l-3.5-3.5a1 1 0 0 0-1.42 0L14.3 9.28l-1.63-1.62a3 3 0 0 0-4.24 0L2.29 13.8a1 1 0 0 0 0 1.41l3.5 3.5a1 1 0 0 0 1.42 0l2.49-2.48 1.63 1.62a3 3 0 0 0 4.24 0l6.14-6.14a1 1 0 0 0 .01-1.42zM7.21 16.59L4.41 13.8l5.44-5.44 2.8 2.8zm11.66-5.54l-5.44 5.44-2.8-2.8 5.44-5.44z"/>
+                </svg>
+            </div>
+        </header>
+
+        <!-- Dynamic Storefront Pages Dashboard Controller -->
+        <main>
+            
+            <!-- SUB-PAGE 1: MAIN E-COMMERCE DASHBOARD -->
+            <div id="products-page" class="store-view active-view">
+                
+                <!-- Explicit Dashboard Summary Greeting Hero Block -->
+                <div class="dashboard-hero">
+                    <div class="dashboard-greeting">
+                        <h2>Welcome Back, <span id="dashboard-user-title">Abdi Majit</span>! 👋</h2>
+                        <p>Explore today's exclusive drops, authenticated listings, and curated vintage packages.</p>
+                    </div>
+                    <div class="dashboard-stats-strip">
+                        <div class="stat-bubble">
+                            <span class="stat-num" id="stat-basket-count">0</span>
+                            <span class="stat-label">Items in Basket</span>
+                        </div>
+                        <div class="stat-bubble">
+                            <span class="stat-num" id="stat-total-spent">KES 0.00</span>
+                            <span class="stat-label">Total Spent (M-Pesa)</span>
+                        </div>
+                        <div class="stat-bubble">
+                            <span class="stat-num" id="stat-orders-placed">0</span>
+                            <span class="stat-label">Orders Placed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid Matrix -->
+                <div class="products-grid">
+                    
+                    <!-- Row 1 Cards -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=500&q=80" alt="Oversized T-shirt" class="card-img-top">
+                        <div class="product-info">
+                            <span class="price-pink">KES 389.99</span>
+                            <span class="product-name">Oversized T-shirt</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Oversized T-shirt', 389.99)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=500&q=80" alt="Jeans" class="card-img-top">
+                        <div class="product-info">
+                            <span class="price-pink">KES 220.99</span>
+                            <span class="product-name">Jeans</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Jeans', 220.99)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=500&q=80" alt="Hoodie" class="card-img-top">
+                        <div class="product-info">
+                            <span class="price-pink">KES 431.99</span>
+                            <span class="product-name">Hoodie</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Hoodie', 431.99)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=80" alt="Formal Blazer" class="card-img-top">
+                        <div class="product-info">
+                            <span class="price-pink">KES 450.99</span>
+                            <span class="product-name">Formal Blazer</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Formal Blazer', 450.99)">Add to Basket</button>
+                    </div>
+
+                    <!-- Row 2 Cards -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=500&q=80" alt="Model Black Outfit" class="card-img-bottom">
+                        <div class="product-info">
+                            <span class="price-pink">KES 600.00</span>
+                            <span class="product-name">Black Outfit</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Model Black Outfit', 600.00)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=500&q=80" alt="Model Strapless Top" class="card-img-bottom">
+                        <div class="product-info">
+                            <span class="price-pink">KES 280.00</span>
+                            <span class="product-name">Strapless Top</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Model Strapless Top', 280.00)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=500&q=80" alt="Model Tiered Top" class="card-img-bottom">
+                        <div class="product-info">
+                            <span class="price-pink">KES 300.00</span>
+                            <span class="product-name">Tiered Top</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Model Tiered Top', 300.00)">Add to Basket</button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1509319117193-57bab727e09d?auto=format&fit=crop&w=500&q=80" alt="Model Black Gown" class="card-img-bottom">
+                        <div class="product-info">
+                            <span class="price-pink">KES 525.00</span>
+                            <span class="product-name">Black Gown</span>
+                        </div>
+                        <button class="add-to-basket-btn" onclick="addToCartClick('Model Black Gown', 525.00)">Add to Basket</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SUB-PAGE 2: SHOPPING CART / BASKET -->
+            <div id="cart-page" class="store-view">
+                <div class="view-panel-card">
+                    <h3 class="panel-title">Your Order Summary</h3>
+                    
+                    <!-- Dynamic Cart Container inside the layout -->
+                    <div id="cart-items-container" class="cart-items-list">
+                        <!-- Items get rendered dynamically here via JS -->
+                    </div>
+                    
+                    <div class="cart-total-footer">
+                        <span>Estimated Total:</span>
+                        <span id="cart-total-price">KES 0.00</span>
+                    </div>
+                    <button class="action-panel-btn" onclick="openMpesaModal()">Proceed to M-Pesa Checkout</button>
+                </div>
+            </div>
+
+            <!-- SUB-PAGE 3: LIVE ORDER TRACKING MODULE -->
+            <div id="track-page" class="store-view">
+                <div class="view-panel-card" style="max-width: 850px;">
+                    <h3 class="panel-title">📦 Live Package Tracking Node</h3>
+                    <div id="tracking-logs-container" class="cart-items-list">
+                        <!-- Dynamic active delivery pipelines generated here -->
+                        <p style="opacity: 0.6; text-align: center; padding: 20px 0;">No packages currently dispatched. Secure checkout items via M-Pesa to trigger logistics processing.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-PAGE 4: USER ACCOUNT PROFILE -->
+            <div id="profile-page" class="store-view">
+                <div class="view-panel-card">
+                    <h3 class="panel-title">Customer Profile Information</h3>
+                    <div class="profile-details-grid">
+                        <div class="profile-row">
+                            <span class="profile-label">Registered Name:</span>
+                            <span class="profile-value" id="profile-display-name">Abdi Majit</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-label">Email Address:</span>
+                            <span class="profile-value" id="profile-display-email">abdi@gmail.com</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-label">Account Tier:</span>
+                            <span class="profile-value" style="color: #b983ff; font-weight: bold;">Premium Thrift Insider</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+       DYNAMIC POPUP PORTAL MODULES: MPESA STK MODAL & SYSTEM PROGRESS LOADER
+       ========================================================================== -->
+    
+    <!-- 1. M-Pesa Checkout Form GUI Modal -->
+    <div id="mpesa-modal-overlay" class="modal-overlay">
+        <div class="mpesa-modal-card">
+            <div class="mpesa-header">
+                <div class="mpesa-logo-text">Lipa Na <span style="color: #4eb848;">M-PESA</span></div>
+                <button class="modal-close-x" onclick="closeMpesaModal()">×</button>
+            </div>
+            <form id="mpesa-payment-form" onsubmit="handleMpesaPayment(event)">
+                <div class="modal-body-content">
+                    <div class="mpesa-amount-banner">
+                        <span>Total Payable Amount:</span>
+                        <strong id="mpesa-modal-amount">KES 0.00</strong>
+                    </div>
+                    <div class="input-group">
+                        <label style="color: #333333; font-weight: 600;">Client Full Name</label>
+                        <input type="text" id="mpesa-client-name" style="border-color: #333;" required>
+                    </div>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label style="color: #333333; font-weight: 600;">M-Pesa Phone Number</label>
+                        <input type="tel" id="mpesa-client-phone" placeholder="e.g. 0712345678" pattern="^(07|01|254)[0-9]{8}$" style="border-color: #333;" required>
+                    </div>
+                </div>
+                <div class="mpesa-footer">
+                    <button type="button" class="mpesa-cancel-btn" onclick="closeMpesaModal()">Cancel</button>
+                    <button type="submit" class="mpesa-confirm-btn">Confirm & Pay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Secure STK Transmission Progress Preloader -->
+    <div id="preloader-overlay" class="modal-overlay" style="background: rgba(0,0,0,0.85);">
+        <div class="preloader-card">
+            <div class="spinner-ring"></div>
+            <h4 id="preloader-title">Authenticating Channel...</h4>
+            <p id="preloader-desc">Initiating secured Lipa Na M-Pesa push hookups to your device. Please do not close this window.</p>
+            <div class="countdown-bar-wrapper">
+                <div id="preloader-bar-fill" class="countdown-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to the external script file -->
+    <script src="app.js"></script>
+</body>
+</html>
